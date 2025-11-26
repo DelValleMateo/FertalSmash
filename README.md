@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍔 FertalSmash - Landing Page & Pedidos
 
-## Getting Started
+![FertalSmash Banner](https://via.placeholder.com/1200x600/171717/ea580c?text=FertalSmash+Web)
+> *Nota: Reemplaza este link con una captura de pantalla real de tu web guardada en tu repo.*
 
-First, run the development server:
+Web oficial de **FertalSmash**, emprendimiento de hamburguesas estilo *Smash* en Gualeguaychú. 
+Desarrollada con tecnologías modernas para ofrecer una experiencia de usuario rápida, visual y orientada a la conversión de ventas a través de WhatsApp.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Características Principales
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Diseño Moderno & Responsive:** Interfaz oscura ("Dark Mode") con acentos naranjas, totalmente adaptada a móviles y escritorio usando **Tailwind CSS**.
+- **Carrito de Compras Interactivo:** - Los usuarios pueden agregar múltiples hamburguesas.
+  - Control de cantidad (+/-) y eliminación de items.
+  - Cálculo automático del precio total.
+- **Integración con WhatsApp:**
+  - Al finalizar el pedido, se genera un mensaje de texto automático con el detalle exacto del pedido y el total a pagar.
+  - Redirección directa a la API de WhatsApp.
+- **Optimización de Imágenes:** Uso del componente `next/image` para carga rápida.
+- **Navegación Suave:** Smooth scroll entre secciones.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tecnologías Utilizadas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **[Next.js 14+](https://nextjs.org/)** - Framework de React (App Router).
+- **[React](https://react.dev/)** - Biblioteca para interfaces de usuario.
+- **[Tailwind CSS](https://tailwindcss.com/)** - Estilos utilitarios.
+- **[Lucide React](https://lucide.dev/)** - Iconografía ligera y moderna.
+- **Netlify** - Plataforma de despliegue (Static Export).
 
-## Learn More
+## ⚙️ Instalación y Uso Local
 
-To learn more about Next.js, take a look at the following resources:
+Si deseas clonar y correr este proyecto en tu máquina local:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clonar el repositorio:**
+   ```bash
+   git clone [https://github.com/DelValleMateo/FertalSmash.git](https://github.com/DelValleMateo/FertalSmash.git)
+   cd fertalsmash
