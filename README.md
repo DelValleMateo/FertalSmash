@@ -1,8 +1,7 @@
 # 🍔 FertalSmash - Landing Page & Pedidos
 
-![FertalSmash Banner](https://via.placeholder.com/1200x600/171717/ea580c?text=FertalSmash+Web)
-> *Nota: Reemplaza este link con una captura de pantalla real de tu web guardada en tu repo.*
-
+![FertalSmash Banner](https://fertalsmash.netlify.app/#menu)
+>
 Web oficial de **FertalSmash**, emprendimiento de hamburguesas estilo *Smash* en Gualeguaychú. 
 Desarrollada con tecnologías modernas para ofrecer una experiencia de usuario rápida, visual y orientada a la conversión de ventas a través de WhatsApp.
 
@@ -25,12 +24,3 @@ Desarrollada con tecnologías modernas para ofrecer una experiencia de usuario r
 - **[Tailwind CSS](https://tailwindcss.com/)** - Estilos utilitarios.
 - **[Lucide React](https://lucide.dev/)** - Iconografía ligera y moderna.
 - **Netlify** - Plataforma de despliegue (Static Export).
-
-## ⚙️ Instalación y Uso Local
-
-Si deseas clonar y correr este proyecto en tu máquina local:
-
-1. **Clonar el repositorio:**
-   ```bash
-   git clone [https://github.com/DelValleMateo/FertalSmash.git](https://github.com/DelValleMateo/FertalSmash.git)
-   cd fertalsmash
