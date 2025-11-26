@@ -1,7 +1,5 @@
 # 🍔 FertalSmash - Landing Page & Pedidos
 
-![FertalSmash Banner](https://fertalsmash.netlify.app/#menu)
->
 Web oficial de **FertalSmash**, emprendimiento de hamburguesas estilo *Smash* en Gualeguaychú. 
 Desarrollada con tecnologías modernas para ofrecer una experiencia de usuario rápida, visual y orientada a la conversión de ventas a través de WhatsApp.
 
