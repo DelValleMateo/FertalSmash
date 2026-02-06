@@ -17,16 +17,16 @@ const menuItems = [
     id: 1,
     name: "La Triple Smash",
     description: "Para los que no le temen a nada. Potencia máxima de sabor.",
-    ingredients: ["Carne x3", "Cheddar x3", "Bacon Crocante", "Salsa Fertal"],
-    price: 10000,
+    ingredients: ["Carne x3", "Cheddar x3", "Bacon", "Salsa Fertal"],
+    price: 12000,
     image: tripleSmashImg
   },
   {
     id: 2,
     name: "La Doble Smash",
     description: "El equilibrio perfecto. La misma calidad, tamaño ideal.",
-    ingredients: ["Carne x2", "Cheddar x2", "Bacon Crocante", "Salsa Fertal"],
-    price: 9000,
+    ingredients: ["Carne x2", "Cheddar x2", "Bacon", "Salsa Fertal"],
+    price: 10000,
     image: dobleSmashImg
   }
 ];
@@ -277,8 +277,8 @@ export default function Home() {
                     <button
                       onClick={() => setDeliveryMethod('pickup')}
                       className={`py-3 px-4 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all ${deliveryMethod === 'pickup'
-                          ? 'bg-orange-600 border-orange-600 text-white'
-                          : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
+                        ? 'bg-orange-600 border-orange-600 text-white'
+                        : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
                         }`}
                     >
                       <Store size={18} />
@@ -287,8 +287,8 @@ export default function Home() {
                     <button
                       onClick={() => setDeliveryMethod('delivery')}
                       className={`py-3 px-4 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all ${deliveryMethod === 'delivery'
-                          ? 'bg-orange-600 border-orange-600 text-white'
-                          : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
+                        ? 'bg-orange-600 border-orange-600 text-white'
+                        : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
                         }`}
                     >
                       <MapPin size={18} />
