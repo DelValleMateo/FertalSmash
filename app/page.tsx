@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Instagram, MessageCircle, ShoppingCart, Plus, Minus, X, Trash2, MapPin, Store } from 'lucide-react';
+import { Instagram, MessageCircle, ShoppingCart, Plus, Minus, X, Trash2, MapPin, Store, Banknote, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -17,7 +17,7 @@ const menuItems = [
     id: 1,
     name: "La Triple Smash",
     description: "Para los que no le temen a nada. Potencia máxima de sabor.",
-    ingredients: ["Carne x3", "Cheddar x3", "Bacon", "Salsa Fertal"],
+    ingredients: ["Carne x3", "Cheddar x3", "Bacon Crocante", "Salsa Fertal"],
     price: 12000,
     image: tripleSmashImg
   },
@@ -25,24 +25,26 @@ const menuItems = [
     id: 2,
     name: "La Doble Smash",
     description: "El equilibrio perfecto. La misma calidad, tamaño ideal.",
-    ingredients: ["Carne x2", "Cheddar x2", "Bacon", "Salsa Fertal"],
+    ingredients: ["Carne x2", "Cheddar x2", "Bacon Crocante", "Salsa Fertal"],
     price: 10000,
     image: dobleSmashImg
   }
 ];
 
-const whatsappNumber = "5493446370092";
+const whatsappNumber = "5493446520649";
+const aliasTransferencia = "mateo.delvalle";
 
 export default function Home() {
   // --- LÓGICA DEL CARRITO ---
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // --- NUEVOS ESTADOS PARA ENTREGA ---
-  const [deliveryMethod, setDeliveryMethod] = useState('pickup'); // 'pickup' (Retiro) o 'delivery' (Envío)
+  // --- ESTADOS PARA ENTREGA Y PAGO ---
+  const [deliveryMethod, setDeliveryMethod] = useState('pickup');
   const [address, setAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('efectivo');
 
-  // Agregar item
+  // Agregar item (VUELVE A ABRIR EL CARRITO AUTOMÁTICAMENTE)
   const addToCart = (item: any) => {
     setCart((prev: any) => {
       const existing = prev.find((i: any) => i.id === item.id);
@@ -51,7 +53,7 @@ export default function Home() {
       }
       return [...prev, { ...item, quantity: 1 }];
     });
-    setIsCartOpen(true);
+    setIsCartOpen(true); // Se abre el carrito al agregar
   };
 
   // Quitar item
@@ -66,34 +68,43 @@ export default function Home() {
     });
   };
 
-  // Cálculos
+  // Cálculos de Totales y Productos No Agregados
   const total = cart.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
   const totalItems = cart.reduce((acc: number, item: any) => acc + item.quantity, 0);
 
+  // Filtramos las hamburguesas que AÚN NO están en el carrito para sugerirlas
+  const uncartedItems = menuItems.filter(
+    (menuItem) => !cart.find((cartItem: any) => cartItem.id === menuItem.id)
+  );
+
   // Enviar pedido a WhatsApp
   const sendOrder = () => {
-    // 1. VALIDACIÓN: Si es envío y no puso dirección, avisar.
     if (deliveryMethod === 'delivery' && address.trim() === '') {
       alert("Por favor, ingresa tu dirección para el envío 📍");
-      return; // Detiene la función, no envía nada
+      return;
     }
 
     let message = "Hola FertalSmash! 🍔\nQuiero realizar el siguiente pedido:\n\n";
 
-    // Lista de productos
     cart.forEach((item: any) => {
       message += `▪️ ${item.quantity}x ${item.name} ($${(item.price * item.quantity).toLocaleString()})\n`;
     });
 
-    // Total
     message += `\n💰 *TOTAL: $${total.toLocaleString()}*`;
-
-    // Información de Entrega
     message += `\n\n------------------\n`;
-    if (deliveryMethod === 'pickup') {
-      message += `🛍️ *Método:* Retiro por el local`;
+
+    // Método de pago
+    if (paymentMethod === 'efectivo') {
+      message += `💵 *Pago:* Efectivo\n`;
     } else {
-      message += `🛵 *Método:* Envío a Domicilio`;
+      message += `📱 *Pago:* Transferencia (Te envío el comprobante por acá)\n`;
+    }
+
+    // Método de entrega
+    if (deliveryMethod === 'pickup') {
+      message += `🛍️ *Entrega:* Retiro por el local (Concordia 1175)`;
+    } else {
+      message += `🛵 *Entrega:* Envío a Domicilio`;
       message += `\n📍 *Dirección:* ${address}`;
     }
 
@@ -173,13 +184,7 @@ export default function Home() {
             {menuItems.map((item) => (
               <div key={item.id} className="bg-neutral-800 rounded-2xl overflow-hidden border border-neutral-700 hover:border-orange-500/50 transition-all hover:shadow-2xl hover:shadow-orange-900/20 group flex flex-col">
                 <div className="aspect-square bg-neutral-700 relative overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
+                  <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-2">
@@ -212,17 +217,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- FOOTER --- */}
-      <footer className="bg-neutral-950 py-8 border-t border-neutral-800">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-neutral-500 text-sm">© {new Date().getFullYear()} FertalSmash. Gualeguaychú.</p>
-          <div className="flex justify-center gap-4 mt-4">
-            <Link href="https://www.instagram.com/fertalsmash/" target="_blank" className="text-neutral-500 hover:text-white transition-colors"><Instagram size={20} /></Link>
-            <Link href={`https://wa.me/${whatsappNumber}`} target="_blank" className="text-neutral-500 hover:text-white transition-colors"><MessageCircle size={20} /></Link>
-          </div>
-        </div>
-      </footer>
-
       {/* --- MODAL DEL CARRITO --- */}
       {isCartOpen && (
         <div className="fixed inset-0 z-[60] flex justify-end">
@@ -246,59 +240,119 @@ export default function Home() {
                   <button onClick={() => setIsCartOpen(false)} className="text-orange-500 hover:underline">Ir al menú</button>
                 </div>
               ) : (
-                cart.map((item: any) => (
-                  <div key={item.id} className="flex items-center gap-4 bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
-                    <div className="flex-1">
-                      <h4 className="font-bold">{item.name}</h4>
-                      <p className="text-sm text-gray-400">${(item.price * item.quantity).toLocaleString()}</p>
+                <>
+                  {/* Lista de hamburguesas agregadas */}
+                  {cart.map((item: any) => (
+                    <div key={item.id} className="flex items-center gap-4 bg-neutral-800/50 p-4 rounded-xl border border-neutral-800">
+                      <div className="flex-1">
+                        <h4 className="font-bold">{item.name}</h4>
+                        <p className="text-sm text-gray-400">${(item.price * item.quantity).toLocaleString()}</p>
+                      </div>
+                      <div className="flex items-center bg-neutral-900 rounded-lg border border-neutral-700">
+                        <button onClick={() => removeFromCart(item.id)} className="p-2 hover:text-red-500 transition-colors">
+                          {item.quantity === 1 ? <Trash2 size={16} /> : <Minus size={16} />}
+                        </button>
+                        <span className="w-8 text-center font-bold text-sm">{item.quantity}</span>
+                        <button onClick={() => addToCart(item)} className="p-2 hover:text-green-500 transition-colors">
+                          <Plus size={16} />
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center bg-neutral-900 rounded-lg border border-neutral-700">
-                      <button onClick={() => removeFromCart(item.id)} className="p-2 hover:text-red-500 transition-colors">
-                        {item.quantity === 1 ? <Trash2 size={16} /> : <Minus size={16} />}
-                      </button>
-                      <span className="w-8 text-center font-bold text-sm">{item.quantity}</span>
-                      <button onClick={() => addToCart(item)} className="p-2 hover:text-green-500 transition-colors">
-                        <Plus size={16} />
-                      </button>
+                  ))}
+
+                  {/* NUEVO: Sugerencias para agregar rápido desde el carrito */}
+                  {uncartedItems.length > 0 && (
+                    <div className="mt-8 pt-6 border-t border-neutral-800 animate-in fade-in duration-500">
+                      <p className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider">¿Sumar otra opción?</p>
+                      <div className="space-y-2">
+                        {uncartedItems.map((item) => (
+                          <div key={item.id} className="flex items-center justify-between bg-neutral-800/30 p-3 rounded-xl border border-neutral-700/50">
+                            <div>
+                              <h5 className="font-bold text-sm text-gray-200">{item.name}</h5>
+                              <p className="text-xs text-orange-500 font-medium">${item.price.toLocaleString()}</p>
+                            </div>
+                            <button
+                              onClick={() => addToCart(item)}
+                              className="bg-neutral-800 hover:bg-orange-600 text-white py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1 text-xs font-bold"
+                            >
+                              <Plus size={14} /> Agregar
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  )}
+                </>
               )}
             </div>
 
-            {/* --- SECCIÓN DE PAGO Y ENVIO (FOOTER DEL CARRITO) --- */}
+            {/* --- SECCIÓN DE PAGO Y ENVIO --- */}
             {cart.length > 0 && (
-              <div className="p-6 bg-neutral-900 border-t border-neutral-800 pb-10">
+              <div className="p-6 bg-neutral-900 border-t border-neutral-800 pb-10 overflow-y-auto max-h-[50vh]">
 
-                {/* 1. Selector de Método de Entrega */}
-                <div className="mb-6">
+                {/* 1. Selector de Método de Pago */}
+                <div className="mb-5">
+                  <p className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wider">Método de pago:</p>
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <button
+                      onClick={() => setPaymentMethod('efectivo')}
+                      className={`py-3 px-2 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all text-sm ${paymentMethod === 'efectivo'
+                        ? 'bg-orange-600 border-orange-600 text-white'
+                        : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
+                        }`}
+                    >
+                      <Banknote size={16} /> Efectivo
+                    </button>
+                    <button
+                      onClick={() => setPaymentMethod('transferencia')}
+                      className={`py-3 px-2 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all text-sm ${paymentMethod === 'transferencia'
+                        ? 'bg-orange-600 border-orange-600 text-white'
+                        : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
+                        }`}
+                    >
+                      <Smartphone size={16} /> Transferencia
+                    </button>
+                  </div>
+
+                  {/* NUEVO: Mensaje de Alias al seleccionar Transferencia */}
+                  {paymentMethod === 'transferencia' && (
+                    <div className="animate-in slide-in-from-top duration-300 fade-in bg-neutral-800 p-4 rounded-xl border border-neutral-700">
+                      <p className="text-sm text-gray-300">
+                        Alias para transferir: <br />
+                        <strong className="text-white text-base tracking-wide select-all">{aliasTransferencia}</strong>
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">Podrás enviarnos el comprobante por WhatsApp.</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. Selector de Método de Entrega */}
+                <div className="mb-5 border-t border-neutral-800 pt-5">
                   <p className="text-sm font-bold text-gray-400 mb-3 uppercase tracking-wider">Método de entrega:</p>
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       onClick={() => setDeliveryMethod('pickup')}
-                      className={`py-3 px-4 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all ${deliveryMethod === 'pickup'
+                      className={`py-3 px-4 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all text-sm ${deliveryMethod === 'pickup'
                         ? 'bg-orange-600 border-orange-600 text-white'
                         : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
                         }`}
                     >
-                      <Store size={18} />
-                      Retiro
+                      <Store size={16} /> Retiro
                     </button>
                     <button
                       onClick={() => setDeliveryMethod('delivery')}
-                      className={`py-3 px-4 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all ${deliveryMethod === 'delivery'
+                      className={`py-3 px-4 rounded-xl border font-medium flex items-center justify-center gap-2 transition-all text-sm ${deliveryMethod === 'delivery'
                         ? 'bg-orange-600 border-orange-600 text-white'
                         : 'bg-neutral-800 border-neutral-700 text-gray-400 hover:border-gray-500'
                         }`}
                     >
-                      <MapPin size={18} />
-                      Envío
+                      <MapPin size={16} /> Envío
                     </button>
                   </div>
                 </div>
 
-                {/* 2. Input de Dirección (Solo si es Delivery) */}
-                {deliveryMethod === 'delivery' && (
+                {/* 3. Input de Dirección vs Dirección del Local */}
+                {deliveryMethod === 'delivery' ? (
                   <div className="mb-6 animate-in slide-in-from-top duration-300 fade-in">
                     <label className="text-sm font-bold text-gray-400 mb-2 block uppercase tracking-wider">
                       Dirección de envío:
@@ -311,10 +365,18 @@ export default function Home() {
                       className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all placeholder:text-neutral-600"
                     />
                   </div>
+                ) : (
+                  <div className="mb-6 animate-in slide-in-from-top duration-300 fade-in bg-orange-500/10 border border-orange-500/20 p-4 rounded-xl flex items-start gap-3">
+                    <MapPin className="text-orange-500 shrink-0 mt-0.5" size={20} />
+                    <div>
+                      <p className="text-sm font-bold text-white mb-1">Dirección de retiro:</p>
+                      <p className="text-sm text-gray-300 font-medium tracking-wide">Concordia 1175</p>
+                    </div>
+                  </div>
                 )}
 
                 {/* Total */}
-                <div className="flex justify-between items-center mb-6 text-xl font-bold">
+                <div className="flex justify-between items-center mb-6 text-xl font-bold border-t border-neutral-700 pt-4">
                   <span>Total:</span>
                   <span className="text-orange-500">${total.toLocaleString()}</span>
                 </div>
